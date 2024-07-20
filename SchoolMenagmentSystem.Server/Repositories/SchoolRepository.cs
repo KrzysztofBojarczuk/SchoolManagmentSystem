@@ -25,7 +25,7 @@ namespace SchoolMenagmentSystem.Server.Repositories
 
         public async Task<School> DeleteSchooldAsync(int id)
         {
-            var school = await _context.Schools.FirstOrDefaultAsync(x => x.SchoodId == id);
+            var school = await _context.Schools.FirstOrDefaultAsync(x => x.SchoolId == id);
 
             if(school == null)
             {
@@ -48,7 +48,7 @@ namespace SchoolMenagmentSystem.Server.Repositories
 
         public async Task<School> GetSchoolbyIdAsync(int id)
         {
-            var school = await _context.Schools.FirstOrDefaultAsync(x => x.SchoodId == id);
+            var school = await _context.Schools.FirstOrDefaultAsync(x => x.SchoolId == id);
 
             if(school == null)
             {

@@ -19,7 +19,7 @@ export const createSchool = async (school: School): Promise<School> => {
 };
 
 export const updateSchool = async (school: School): Promise<School> => {
-  const response = await axios.put(`${API_URL}/${school.SchoodId}`, school);
+  const response = await axios.put(`${API_URL}/${school.schoolId}`, school);
   return response.data;
 };
 

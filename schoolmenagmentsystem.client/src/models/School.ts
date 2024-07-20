@@ -1,5 +1,5 @@
 export interface School {
-  SchoodId: number;
-  Title: string;
-  NumberOfClasses: number;
+  schoolId: number;
+  title: string;
+  numberOfClasses: number;
 }
