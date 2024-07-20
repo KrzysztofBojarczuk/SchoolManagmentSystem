@@ -15,6 +15,11 @@
         <td>{{ item.schoolId }}</td>
         <td>{{ item.title }}</td>
         <td>{{ item.numberOfClasses }}</td>
+        <td>
+          <v-btn @click="deleteSchool(item.schoolId)" color="red"
+            >Delete
+          </v-btn>
+        </td>
       </tr>
     </template>
     <template v-slot:no-data>
@@ -25,23 +30,29 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
-import { getSchools } from "@/services/schoolService";
+import { getSchools, deleteSchool } from "@/services/schoolService";
 import type { School } from "@/models/School";
 
 export default defineComponent({
   name: "School",
   setup() {
-    //ref jest używane do tworzenia reaktywnych odniesień, które śledzą zmiany w wartościach. Oto jak to działa w praktyce:
+    //ref jest używane do tworzenia reaktywnych odniesień, które śledzą zmiany w wartościach
     const schools = ref<School[]>([]);
     const headers = ref([
       { text: "Id", value: "schoolId" },
       { text: "Title", value: "title" },
       { text: "Number Of Classes", value: "numberOfClasses" },
+      { text: "Actions", value: "actions" },
     ]);
 
     const fetchSchools = async () => {
       const response = await getSchools();
       schools.value = response;
+    };
+
+    const handleDelete = async (id: number) => {
+      await deleteSchool(id);
+      await fetchSchools();
     };
 
     onMounted(() => {
@@ -51,6 +62,7 @@ export default defineComponent({
     return {
       schools,
       headers,
+      deleteSchool: handleDelete,
     };
   },
 });
