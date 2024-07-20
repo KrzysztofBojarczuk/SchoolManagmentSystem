@@ -39,7 +39,7 @@ namespace SchoolMenagmentSystem.Server.Controllers
 
             var schoolGet = _mapper.Map<SchoolGetDto>(schoolCreate);
 
-            return CreatedAtAction(nameof(GetSchoolById), new { id = schoolGet.SchoodId }, schoolGet  );
+            return CreatedAtAction(nameof(GetSchoolById), new { id = schoolGet.SchoolId }, schoolGet  );
         }
 
         [HttpGet("{id}")]
@@ -64,7 +64,7 @@ namespace SchoolMenagmentSystem.Server.Controllers
         {
             var toSchoolUpdate = _mapper.Map<School>(school);
 
-            toSchoolUpdate.SchoodId = id;
+            toSchoolUpdate.SchoolId = id;
 
             await _shoolRepository.UpdateSchoolAsync(toSchoolUpdate);
 
