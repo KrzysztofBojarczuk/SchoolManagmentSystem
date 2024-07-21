@@ -1,42 +1,66 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="schools"
-    item-key="schoolId"
-    class="elevation-1"
-  >
-    <template v-slot:top>
-      <v-toolbar flat>
-        <v-toolbar-title>School List</v-toolbar-title>
-      </v-toolbar>
-    </template>
-    <template v-slot:item="{ item }">
-      <tr>
-        <td>{{ item.schoolId }}</td>
-        <td>{{ item.title }}</td>
-        <td>{{ item.numberOfClasses }}</td>
-        <td>
-          <v-btn @click="deleteSchool(item.schoolId)" color="red"
-            >Delete
-          </v-btn>
-        </td>
-      </tr>
-    </template>
-    <template v-slot:no-data>
-      <v-alert type="error" :value="true">No data available</v-alert>
-    </template>
-  </v-data-table>
+  <v-container>
+    <v-card class="pa-5 mb-5">
+      <v-form v-model="valid" ref="form" @submit.prevent="submitForm">
+        <v-text-field
+          v-model="newSchool.title"
+          label="Title"
+          :rules="[rules.required]"
+        ></v-text-field>
+        <v-text-field
+          v-model="newSchool.numberOfClasses"
+          label="Number of Classes"
+          :rules="[rules.required, rules.number]"
+          type="number"
+        ></v-text-field>
+        <v-btn :disabled="!valid" color="success" type="submit">
+          Add School
+        </v-btn>
+      </v-form>
+    </v-card>
+
+    <v-data-table
+      :headers="headers"
+      :items="schools"
+      item-key="schoolId"
+      class="elevation-1"
+    >
+      <template v-slot:top>
+        <v-toolbar flat>
+          <v-toolbar-title>School List</v-toolbar-title>
+        </v-toolbar>
+      </template>
+      <template v-slot:item="{ item }">
+        <tr>
+          <td>{{ item.schoolId }}</td>
+          <td>{{ item.title }}</td>
+          <td>{{ item.numberOfClasses }}</td>
+          <td>
+            <v-btn @click="deleteSchool(item.schoolId)" color="red">
+              Delete
+            </v-btn>
+          </td>
+        </tr>
+      </template>
+      <template v-slot:no-data>
+        <v-alert type="error" :value="true">No data available</v-alert>
+      </template>
+    </v-data-table>
+  </v-container>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
-import { getSchools, deleteSchool } from "@/services/schoolService";
+import {
+  getSchools,
+  createSchool,
+  deleteSchool,
+} from "@/services/schoolService";
 import type { School } from "@/models/School";
 
 export default defineComponent({
   name: "School",
   setup() {
-    //ref jest używane do tworzenia reaktywnych odniesień, które śledzą zmiany w wartościach
     const schools = ref<School[]>([]);
     const headers = ref([
       { text: "Id", value: "schoolId" },
@@ -44,6 +68,17 @@ export default defineComponent({
       { text: "Number Of Classes", value: "numberOfClasses" },
       { text: "Actions", value: "actions" },
     ]);
+
+    const valid = ref(false);
+    const newSchool = ref<Partial<School>>({
+      title: "",
+      numberOfClasses: 0,
+    });
+
+    const rules = {
+      required: (value: any) => !!value || "Required.",
+      number: (value: any) => !isNaN(value) || "Must be a number.",
+    };
 
     const fetchSchools = async () => {
       const response = await getSchools();
@@ -55,6 +90,15 @@ export default defineComponent({
       await fetchSchools();
     };
 
+    const submitForm = async () => {
+      if (valid.value) {
+        await createSchool(newSchool.value as School);
+        newSchool.value.title = "";
+        newSchool.value.numberOfClasses = 0;
+        await fetchSchools();
+      }
+    };
+
     onMounted(() => {
       fetchSchools();
     });
@@ -62,7 +106,11 @@ export default defineComponent({
     return {
       schools,
       headers,
+      valid,
+      newSchool,
+      rules,
       deleteSchool: handleDelete,
+      submitForm,
     };
   },
 });
