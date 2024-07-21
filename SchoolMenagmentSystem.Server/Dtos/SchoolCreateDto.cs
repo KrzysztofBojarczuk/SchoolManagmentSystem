@@ -3,6 +3,6 @@
     public class SchoolCreateDto
     {
         public string Title { get; set; }
-        public int NumberOfClasses { get; set; }
+        public int NumberOfRooms { get; set; }
     }
 }

@@ -21,9 +21,9 @@ namespace SchoolMenagmentSystem.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAlSchool()
+        public async Task<IActionResult> GetAlSchool(string searchTerm = null)
         {
-            var school = await _shoolRepository.GetAllSchoolAsync();
+            var school = await _shoolRepository.GetAllSchoolAsync(searchTerm);
 
             var schoolGet =_mapper.Map<List<SchoolGetDto>>(school);
 

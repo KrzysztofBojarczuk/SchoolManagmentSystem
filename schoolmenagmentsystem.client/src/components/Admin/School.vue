@@ -8,8 +8,8 @@
           :rules="[rules.required]"
         ></v-text-field>
         <v-text-field
-          v-model="newSchool.numberOfClasses"
-          label="Number of Classes"
+          v-model="newSchool.numberOfRooms"
+          label="Number of Rooms"
           :rules="[rules.required, rules.number]"
           type="number"
         ></v-text-field>
@@ -18,7 +18,11 @@
         </v-btn>
       </v-form>
     </v-card>
-
+    <v-text-field
+      v-model="searchTerm"
+      label="Search"
+      @input="fetchSchools"
+    ></v-text-field>
     <v-data-table
       :headers="headers"
       :items="schools"
@@ -34,7 +38,7 @@
         <tr>
           <td>{{ item.schoolId }}</td>
           <td>{{ item.title }}</td>
-          <td>{{ item.numberOfClasses }}</td>
+          <td>{{ item.numberOfRooms }}</td>
           <td>
             <v-btn @click="deleteSchool(item.schoolId)" color="red">
               Delete
@@ -72,8 +76,10 @@ export default defineComponent({
     const valid = ref(false);
     const newSchool = ref<Partial<School>>({
       title: "",
-      numberOfClasses: 0,
+      numberOfRooms: 0,
     });
+
+    const searchTerm = ref<string>("");
 
     const rules = {
       required: (value: any) => !!value || "Required.",
@@ -81,7 +87,7 @@ export default defineComponent({
     };
 
     const fetchSchools = async () => {
-      const response = await getSchools();
+      const response = await getSchools(searchTerm.value);
       schools.value = response;
     };
 
@@ -94,7 +100,7 @@ export default defineComponent({
       if (valid.value) {
         await createSchool(newSchool.value as School);
         newSchool.value.title = "";
-        newSchool.value.numberOfClasses = 0;
+        newSchool.value.numberOfRooms = 0;
         await fetchSchools();
       }
     };
@@ -109,8 +115,10 @@ export default defineComponent({
       valid,
       newSchool,
       rules,
+      searchTerm,
       deleteSchool: handleDelete,
       submitForm,
+      fetchSchools,
     };
   },
 });

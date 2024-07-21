@@ -3,8 +3,10 @@ import type { School } from "@/models/School";
 
 const API_URL = "https://localhost:7290/api/School";
 
-export const getSchools = async (): Promise<School[]> => {
-  const response = await axios.get(API_URL);
+export const getSchools = async (searchTerm?: string): Promise<School[]> => {
+  const response = await axios.get(API_URL, {
+    params: { searchTerm },
+  });
   return response.data;
 };
 
