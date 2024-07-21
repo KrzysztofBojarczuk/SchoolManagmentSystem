@@ -28,11 +28,6 @@ namespace SchoolMenagmentSystem.Server.Repositories
         {
             var school = await _context.Schools.FirstOrDefaultAsync(x => x.SchoolId == id);
 
-            if(school == null)
-            {
-                return null;
-            }
-
             _context.Schools.Remove(school);
 
             await _context.SaveChangesAsync();

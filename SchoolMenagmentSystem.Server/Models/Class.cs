@@ -8,7 +8,6 @@ namespace SchoolManagmentSystem.Server.Models
         [Key]
         public int ClassId { get; set; }
         public string ClassName { get; set; }
-        [Required]
         [Range(1, 12)]
         public int GradeLevel { get; set; }
         public int SchoolId { get; set; }
