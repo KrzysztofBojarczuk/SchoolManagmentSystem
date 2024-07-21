@@ -40,9 +40,9 @@
           <td>{{ item.title }}</td>
           <td>{{ item.numberOfRooms }}</td>
           <td>
-            <v-btn @click="deleteSchool(item.schoolId)" color="red">
-              Delete
-            </v-btn>
+            <v-icon @click="deleteSchool(item.schoolId)" color="black">
+              mdi-trash-can
+            </v-icon>
           </td>
         </tr>
       </template>
@@ -64,13 +64,14 @@ import type { School } from "@/models/School";
 
 export default defineComponent({
   name: "School",
+
   setup() {
     const schools = ref<School[]>([]);
     const headers = ref([
-      { text: "Id", value: "schoolId" },
-      { text: "Title", value: "title" },
-      { text: "Number Of Classes", value: "numberOfClasses" },
-      { text: "Actions", value: "actions" },
+      { title: "Id", value: "schoolId" },
+      { title: "Title", value: "title" },
+      { title: "Number Of Rooms", value: "numberOfRooms" },
+      { title: "Actions", value: "actions", sortable: false },
     ]);
 
     const valid = ref(false);

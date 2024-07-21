@@ -28,6 +28,11 @@ namespace SchoolManagmentSystem.Server.Repositories
         {
             var school = await _context.Schools.Include(x => x.Clases).FirstOrDefaultAsync(x => x.SchoolId == schoolId);
 
+            if (school == null)
+            {
+                return null;
+            }
+
             school.Clases.Add(createClass);
 
             await _context.SaveChangesAsync();

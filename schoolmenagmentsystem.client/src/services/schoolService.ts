@@ -10,8 +10,8 @@ export const getSchools = async (searchTerm?: string): Promise<School[]> => {
   return response.data;
 };
 
-export const getSchoolById = async (id: number): Promise<School> => {
-  const response = await axios.get(`${API_URL}/${id}`);
+export const getSchoolById = async (schoolId: number): Promise<School> => {
+  const response = await axios.get(`${API_URL}/${schoolId}`);
   return response.data;
 };
 
@@ -20,13 +20,16 @@ export const createSchool = async (school: School): Promise<School> => {
   return response.data;
 };
 
-export const updateSchool = async (school: School): Promise<School> => {
-  const response = await axios.put(`${API_URL}/${school.schoolId}`, school);
+export const updateSchool = async (schoolToUpdate: School): Promise<School> => {
+  const response = await axios.put(
+    `${API_URL}/${schoolToUpdate.schoolId}`,
+    schoolToUpdate
+  );
   return response.data;
 };
 
-export const deleteSchool = async (id: number): Promise<void> => {
-  await axios.delete(`${API_URL}/${id}`);
+export const deleteSchool = async (schoolId: number): Promise<void> => {
+  await axios.delete(`${API_URL}/${schoolId}`);
 };
 
 //Promise to obiekt, który reprezentuje wynik operacji asynchronicznej, która może zakończyć się sukcesem lub niepowodzeniem.
