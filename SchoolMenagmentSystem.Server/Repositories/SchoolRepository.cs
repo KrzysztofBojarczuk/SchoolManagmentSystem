@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SchoolMenagmentSystem.Server.Abstraction;
 using SchoolMenagmentSystem.Server.Data;
 using SchoolMenagmentSystem.Server.Models;
@@ -39,9 +40,14 @@ namespace SchoolMenagmentSystem.Server.Repositories
             return school;
         }
 
-        public async Task<List<School>> GetAllSchoolAsync()
+        public async Task<List<School>> GetAllSchoolAsync(string searchTerm)
         {
             var query = await _context.Schools.ToListAsync();
+
+            if (!searchTerm.IsNullOrEmpty())
+            {
+                query = query.Where(x => x.Title.ToLower().Contains(searchTerm.ToLower())).ToList();
+            }
 
             return query;
         }

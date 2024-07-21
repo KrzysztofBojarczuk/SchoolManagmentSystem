@@ -9,7 +9,7 @@ namespace SchoolMenagmentSystem.Server.Models
         [Key]
         public int SchoolId { get; set; }
         public string Title { get; set; }
-        public int NumberOfClasses { get; set; }
+        public int NumberOfRooms { get; set; }
         public ICollection<Class> Clases { get; } = new List<Class>();
     }
 }
