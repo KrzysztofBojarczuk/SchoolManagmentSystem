@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SchoolManagmentSystem.Server.Abstraction;
+using SchoolManagmentSystem.Server.Repositories;
 using SchoolMenagmentSystem.Server.Abstraction;
 using SchoolMenagmentSystem.Server.Data;
 using SchoolMenagmentSystem.Server.Repositories;
@@ -16,6 +18,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
+builder.Services.AddScoped<IClassRepository, ClassRepository>();
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
