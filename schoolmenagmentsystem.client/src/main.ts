@@ -9,10 +9,11 @@ import "@mdi/font/css/materialdesignicons.css";
 
 // Components
 import App from "./App.vue";
+import router from "./router/index";
 
 const vuetify = createVuetify({
   components,
   directives,
 });
 
-createApp(App).use(vuetify).mount("#app");
+createApp(App).use(vuetify).use(router).mount("#app");
