@@ -13,6 +13,13 @@
           :rules="[rules.required, rules.number]"
           type="number"
         ></v-text-field>
+        <v-autocomplete
+          label="Type of School"
+          :items="schoolTypeOptions"
+          item-title="text"
+          item-value="value"
+          v-model="newSchool.type"
+        ></v-autocomplete>
         <v-btn :disabled="!valid" color="success" type="submit">
           Add School
         </v-btn>
@@ -39,6 +46,7 @@
           <td>{{ item.schoolId }}</td>
           <td>{{ item.title }}</td>
           <td>{{ item.numberOfRooms }}</td>
+          <td>{{ getSchoolTypeText(item.type) }}</td>
           <td>
             <v-icon @click="deleteSchool(item.schoolId)" color="black">
               mdi-trash-can
@@ -61,25 +69,36 @@ import {
   deleteSchool,
 } from "@/services/schoolService";
 import type { School } from "@/models/School";
+import { SchoolType } from "@/enums/SchoolType";
+import { getSchoolTypeText } from "@/enums/getSchoolTypeText";
 
 export default defineComponent({
   name: "School",
 
   setup() {
+    const schoolTypeOptions = ref([
+      { text: "Technical School", value: SchoolType.TechnicalSchool },
+      { text: "High School", value: SchoolType.HighSchool },
+      { text: "Elementary School", value: SchoolType.ElementarySchool },
+    ]);
+
     const schools = ref<School[]>([]);
+
     const headers = ref([
       { title: "Id", value: "schoolId" },
       { title: "Title", value: "title" },
       { title: "Number Of Rooms", value: "numberOfRooms" },
+      { title: "Type Of School", value: "type" },
       { title: "Actions", value: "actions", sortable: false },
     ]);
 
     const valid = ref(false);
+
     const newSchool = ref<Partial<School>>({
       title: "",
       numberOfRooms: 0,
+      type: SchoolType.TechnicalSchool,
     });
-
     const searchTerm = ref<string>("");
 
     const rules = {
@@ -102,6 +121,7 @@ export default defineComponent({
         await createSchool(newSchool.value as School);
         newSchool.value.title = "";
         newSchool.value.numberOfRooms = 0;
+        newSchool.value.type = SchoolType.TechnicalSchool;
         await fetchSchools();
       }
     };
@@ -120,9 +140,13 @@ export default defineComponent({
       deleteSchool: handleDelete,
       submitForm,
       fetchSchools,
+      schoolTypeOptions,
+      getSchoolTypeText,
     };
   },
 });
 </script>
 
 <style scoped></style>
+<!-- ref, Vue sprawia, że ​​wartość staje się reaktywna, więc jeśli 
+się zmieni, komponent zareaguje na te zmiany i odpowiednio zaktualizuje DOM lub inne reaktywne właściwości. -->
