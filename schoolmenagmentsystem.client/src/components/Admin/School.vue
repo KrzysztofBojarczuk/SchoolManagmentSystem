@@ -48,7 +48,7 @@
           <td>{{ item.numberOfRooms }}</td>
           <td>{{ getSchoolTypeText(item.type) }}</td>
           <td>
-            <v-icon @click="deleteSchool(item.schoolId)" color="black">
+            <v-icon @click="handleDelete(item.schoolId)" color="black">
               mdi-trash-can
             </v-icon>
           </td>
@@ -61,7 +61,7 @@
   </v-container>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
 import {
   getSchools,
@@ -72,78 +72,58 @@ import type { School } from "@/models/School";
 import { SchoolType } from "@/enums/SchoolType";
 import { getSchoolTypeText } from "@/enums/getSchoolTypeText";
 
-export default defineComponent({
-  name: "School",
+const schoolTypeOptions = ref([
+  { text: "Technical School", value: SchoolType.TechnicalSchool },
+  { text: "High School", value: SchoolType.HighSchool },
+  { text: "Elementary School", value: SchoolType.ElementarySchool },
+]);
 
-  setup() {
-    const schoolTypeOptions = ref([
-      { text: "Technical School", value: SchoolType.TechnicalSchool },
-      { text: "High School", value: SchoolType.HighSchool },
-      { text: "Elementary School", value: SchoolType.ElementarySchool },
-    ]);
+const schools = ref<School[]>([]);
 
-    const schools = ref<School[]>([]);
+const headers = ref([
+  { title: "Id", value: "schoolId" },
+  { title: "Title", value: "title" },
+  { title: "Number Of Rooms", value: "numberOfRooms" },
+  { title: "Type Of School", value: "type" },
+  { title: "Actions", value: "actions", sortable: false },
+]);
 
-    const headers = ref([
-      { title: "Id", value: "schoolId" },
-      { title: "Title", value: "title" },
-      { title: "Number Of Rooms", value: "numberOfRooms" },
-      { title: "Type Of School", value: "type" },
-      { title: "Actions", value: "actions", sortable: false },
-    ]);
+const valid = ref(false);
 
-    const valid = ref(false);
+const newSchool = ref<Partial<School>>({
+  title: "",
+  numberOfRooms: 0,
+  type: SchoolType.TechnicalSchool,
+});
+const searchTerm = ref<string>("");
 
-    const newSchool = ref<Partial<School>>({
-      title: "",
-      numberOfRooms: 0,
-      type: SchoolType.TechnicalSchool,
-    });
-    const searchTerm = ref<string>("");
+const rules = {
+  required: (value: any) => !!value || "Required.",
+  number: (value: any) => !isNaN(value) || "Must be a number.",
+};
 
-    const rules = {
-      required: (value: any) => !!value || "Required.",
-      number: (value: any) => !isNaN(value) || "Must be a number.",
-    };
+const fetchSchools = async () => {
+  const response = await getSchools(searchTerm.value);
+  schools.value = response;
+};
 
-    const fetchSchools = async () => {
-      const response = await getSchools(searchTerm.value);
-      schools.value = response;
-    };
+const handleDelete = async (id: number) => {
+  await deleteSchool(id);
+  await fetchSchools();
+};
 
-    const handleDelete = async (id: number) => {
-      await deleteSchool(id);
-      await fetchSchools();
-    };
+const submitForm = async () => {
+  if (valid.value) {
+    await createSchool(newSchool.value as School);
+    newSchool.value.title = "";
+    newSchool.value.numberOfRooms = 0;
+    newSchool.value.type = SchoolType.TechnicalSchool;
+    await fetchSchools();
+  }
+};
 
-    const submitForm = async () => {
-      if (valid.value) {
-        await createSchool(newSchool.value as School);
-        newSchool.value.title = "";
-        newSchool.value.numberOfRooms = 0;
-        newSchool.value.type = SchoolType.TechnicalSchool;
-        await fetchSchools();
-      }
-    };
-
-    onMounted(() => {
-      fetchSchools();
-    });
-
-    return {
-      schools,
-      headers,
-      valid,
-      newSchool,
-      rules,
-      searchTerm,
-      deleteSchool: handleDelete,
-      submitForm,
-      fetchSchools,
-      schoolTypeOptions,
-      getSchoolTypeText,
-    };
-  },
+onMounted(() => {
+  fetchSchools();
 });
 </script>
 
