@@ -1,9 +1,7 @@
-<script setup lang="ts">
-import School from "./components/Admin/School.vue";
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <School />
+  <router-view />
 </template>
 
 <style scoped></style>
