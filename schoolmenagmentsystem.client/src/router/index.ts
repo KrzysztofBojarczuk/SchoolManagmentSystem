@@ -1,5 +1,5 @@
 import School from "@/components/Admin/School.vue";
-import Home from "@/views/Home.vue";
+import Homepage from "@/views/Homepage.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -14,8 +14,8 @@ const router = createRouter({
       component: School,
     },
     {
-      path: "/home",
-      component: Home,
+      path: "/homepage",
+      component: Homepage,
     },
   ],
 });
