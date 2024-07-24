@@ -13,6 +13,8 @@ namespace SchoolMenagmentSystem.Server.Data
 
         public DbSet<School> Schools { get; set; }
         public DbSet<Class> Classes { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<GymnasticsHall> GymnasticsHalls { get; set; }
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{

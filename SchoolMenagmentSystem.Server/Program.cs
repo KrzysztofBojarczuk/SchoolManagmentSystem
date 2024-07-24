@@ -19,6 +19,8 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
 builder.Services.AddScoped<IClassRepository, ClassRepository>();
+builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+builder.Services.AddScoped<IGymnasticsHallRepository, GymnasticsHallRepository>();
 
 builder.Services.AddDbContext<DataContext>(options =>
 {

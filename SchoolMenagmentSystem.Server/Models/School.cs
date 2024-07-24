@@ -12,6 +12,8 @@ namespace SchoolMenagmentSystem.Server.Models
         public string Title { get; set; }
         public int NumberOfRooms { get; set; }
         public SchoolType Type { get; set; }
-        public ICollection<Class> Clases { get; } = new List<Class>();
+        public List<Class> Clases { get; set; }
+        public Address Addres { get; set; }
+        public List<GymnasticsHall> GymnasticsHalls { get; set; }
     }
 }
