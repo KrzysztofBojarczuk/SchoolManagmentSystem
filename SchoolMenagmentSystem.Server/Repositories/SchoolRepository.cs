@@ -24,9 +24,9 @@ namespace SchoolMenagmentSystem.Server.Repositories
             return school;
         }
 
-        public async Task<School> DeleteSchooldAsync(int id)
+        public async Task<School> DeleteSchooldAsync(int schoolId)
         {
-            var school = await _context.Schools.FirstOrDefaultAsync(x => x.SchoolId == id);
+            var school = await _context.Schools.FirstOrDefaultAsync(x => x.SchoolId == schoolId);
 
             _context.Schools.Remove(school);
 
@@ -47,9 +47,9 @@ namespace SchoolMenagmentSystem.Server.Repositories
             return query;
         }
 
-        public async Task<School> GetSchoolbyIdAsync(int id)
+        public async Task<School> GetSchoolbyIdAsync(int schoolId)
         {
-            var school = await _context.Schools.FirstOrDefaultAsync(x => x.SchoolId == id);
+            var school = await _context.Schools.FirstOrDefaultAsync(x => x.SchoolId == schoolId);
 
             if(school == null)
             {

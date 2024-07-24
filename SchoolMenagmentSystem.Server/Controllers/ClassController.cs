@@ -30,10 +30,10 @@ namespace SchoolManagmentSystem.Server.Controllers
             return Ok(classesGetDto);
         }
 
-        [HttpGet("school/{schoolId}/class/{classId}")]
-        public async Task<IActionResult> GetSchoolClassById(int schoolId, int classId)
+        [HttpGet("school/class/{classId}")]
+        public async Task<IActionResult> GetSchoolClassById( int classId)
         {
-            var schoolClass = await _classRepository.GetSchoolClassByIdAsync(schoolId, classId);
+            var schoolClass = await _classRepository.GetSchoolClassByIdAsync(classId);
 
             if (schoolClass == null)
             {
