@@ -1,15 +1,17 @@
 <template>
   <v-app>
     <v-app-bar :elevation="2">
-      <v-list class="d-flex">
-        <v-list-item
-          v-for="(menu, index) in menus"
-          :key="index"
-          @click="navigateTo(menu.path)"
-        >
-          <v-list-item-title>{{ menu.name }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
+      <v-container>
+        <v-list class="d-flex">
+          <v-list-item
+            v-for="(menu, index) in menus"
+            :key="index"
+            @click="navigateTo(menu.path)"
+          >
+            <v-list-item-title>{{ menu.name }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-container>
     </v-app-bar>
     <v-main>
       <router-view />

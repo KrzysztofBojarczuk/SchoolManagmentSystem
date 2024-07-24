@@ -81,5 +81,19 @@ namespace SchoolManagmentSystem.Server.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("getNumberOfSchool")]
+        public async Task<IActionResult> GetNumberOfClassesBySchooldById(int schoolId)
+        {
+            var numberOfClasses = await _classRepository.GetNumberOfClassesBySchoolByIdAsync(schoolId);
+
+            if (numberOfClasses == null)
+            {
+
+                return NotFound();
+            }
+
+            return Ok(numberOfClasses);
+        }
     }
 }

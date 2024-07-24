@@ -48,3 +48,10 @@ export const deleteClass = async (
 ): Promise<void> => {
   await axios.delete(`${API_URL}/school/${schoolId}/class/${classId}`);
 };
+
+export const getNumberOfClass = async (schoolId: number): Promise<number> => {
+  const response = await axios.get(
+    `${API_URL}/getNumberOfSchool?schoolId=${schoolId}`
+  );
+  return response.data;
+};

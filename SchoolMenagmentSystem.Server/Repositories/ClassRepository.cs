@@ -65,5 +65,12 @@ namespace SchoolManagmentSystem.Server.Repositories
 
             return classToDelete;
         }
+
+        public async Task<int> GetNumberOfClassesBySchoolByIdAsync(int schoolId)
+        {
+            var numberOfSchool = await _context.Classes.Where(x => x.SchoolId == schoolId).CountAsync();
+
+            return numberOfSchool;
+        }
     }
 }
