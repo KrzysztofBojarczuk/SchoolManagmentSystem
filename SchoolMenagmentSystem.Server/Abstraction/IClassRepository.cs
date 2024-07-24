@@ -9,5 +9,6 @@ namespace SchoolManagmentSystem.Server.Abstraction
         Task<Class> CreateSchoolClassAsync(int schoolId, Class createClass);
         Task<Class> UpdateSchoolClassAsync(int schoolId, Class updatedClass);
         Task<Class> DeleteSchoolClassAsync(int schoolId, int classId);
+        Task<int> GetNumberOfClassesBySchoolByIdAsync(int schoolId);
     }
 }

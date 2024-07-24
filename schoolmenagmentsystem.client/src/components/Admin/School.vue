@@ -51,6 +51,9 @@
             <v-icon @click="handleDelete(item.schoolId)" color="black">
               mdi-trash-can
             </v-icon>
+            <v-icon @click="handleInfo(item.schoolId)">
+              mdi-information
+            </v-icon>
           </td>
         </tr>
       </template>
@@ -71,6 +74,8 @@ import {
 import type { School } from "@/models/School";
 import { SchoolType } from "@/enums/SchoolType";
 import { getSchoolTypeText } from "@/enums/getSchoolTypeText";
+import { getNumberOfClass } from "@/services/classService";
+import router from "@/router";
 
 const schoolTypeOptions = ref([
   { text: "Technical School", value: SchoolType.TechnicalSchool },
@@ -104,12 +109,17 @@ const rules = {
 
 const fetchSchools = async () => {
   const response = await getSchools(searchTerm.value);
+  const lol = await getNumberOfClass(1053);
   schools.value = response;
 };
 
 const handleDelete = async (id: number) => {
   await deleteSchool(id);
   await fetchSchools();
+};
+
+const handleInfo = (id: number) => {
+  router.push({ name: "SchoolInfo", params: { id } });
 };
 
 const submitForm = async () => {
