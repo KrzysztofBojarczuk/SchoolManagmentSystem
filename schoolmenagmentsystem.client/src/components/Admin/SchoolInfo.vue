@@ -18,9 +18,17 @@
               <p>Street: {{ address.street }}</p>
               <p>Number: {{ address.number }}</p>
               <p>Zip Code: {{ address.zipCode }}</p>
+
+              <div class="mt-3">
+                <v-btn class="mr-6"> Update Address </v-btn>
+                <v-btn color="red" @click="handleDelete">
+                  Delete Address
+                </v-btn>
+              </div>
             </div>
             <div v-else>
               <p>No address available.</p>
+              <v-btn class="mt-3"> Add Address </v-btn>
             </div>
           </v-card-text>
         </v-card>
@@ -33,18 +41,26 @@
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import { getNumberOfClass } from "@/services/classService";
-import { getAddressBySchoolId } from "@/services/addressService";
+import { getAddressById, deleteAddress } from "@/services/addressService";
 import type { Address } from "@/models/Address";
 
 const route = useRoute();
-const schoolId = route.params.id;
+const schoolId = Number(route.params.id);
 const numberOfClasses = ref<number | null>(null);
 const address = ref<Address | null>(null);
 
-onMounted(async () => {
-  numberOfClasses.value = await getNumberOfClass(Number(schoolId));
+const handleDelete = async () => {
+  await deleteAddress(schoolId);
+  await fetchAddress();
+};
 
-  address.value = await getAddressBySchoolId(Number(schoolId));
+const fetchAddress = async () => {
+  address.value = await getAddressById(schoolId);
+};
+
+onMounted(async () => {
+  numberOfClasses.value = await getNumberOfClass(schoolId);
+  await fetchAddress();
 });
 </script>
 

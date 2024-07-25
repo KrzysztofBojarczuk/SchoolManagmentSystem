@@ -109,7 +109,6 @@ const rules = {
 
 const fetchSchools = async () => {
   const response = await getSchools(searchTerm.value);
-  const lol = await getNumberOfClass(1053);
   schools.value = response;
 };
 

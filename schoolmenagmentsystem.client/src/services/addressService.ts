@@ -3,9 +3,7 @@ import axios from "axios";
 
 const API_URL = "https://localhost:7290/api/Address";
 
-export const getAddressBySchoolId = async (
-  schoolId: number
-): Promise<Address> => {
+export const getAddressById = async (schoolId: number): Promise<Address> => {
   const response = await axios.get(`${API_URL}/${schoolId}`);
   return response.data;
 };
@@ -26,9 +24,6 @@ export const updateAddress = async (
   return response.data;
 };
 
-export const deleteAddress = async (
-  schoolId: number,
-  addressId: number
-): Promise<void> => {
-  await axios.delete(`${API_URL}/${schoolId}/${addressId}`);
+export const deleteAddress = async (schoolId: number): Promise<void> => {
+  await axios.delete(`${API_URL}/${schoolId}`);
 };
