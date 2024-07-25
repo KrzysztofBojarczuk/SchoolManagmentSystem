@@ -31,7 +31,7 @@ namespace SchoolManagmentSystem.Server.Controllers
 
             if (address == null)
             {
-                return NotFound();
+                return Ok(null);
             }
 
             var addressMapped = _mapper.Map<AddressGetDto>(address);
