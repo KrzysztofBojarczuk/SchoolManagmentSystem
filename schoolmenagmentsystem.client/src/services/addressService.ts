@@ -1,3 +1,4 @@
+import type { AddressCreateDTO } from "@/models/AddresCreateDTO";
 import type { Address } from "@/models/Address";
 import axios from "axios";
 
@@ -10,8 +11,8 @@ export const getAddressById = async (schoolId: number): Promise<Address> => {
 
 export const createAddress = async (
   schoolId: number,
-  address: Address
-): Promise<Address> => {
+  address: AddressCreateDTO
+): Promise<AddressCreateDTO> => {
   const response = await axios.post(`${API_URL}/${schoolId}`, address);
   return response.data;
 };

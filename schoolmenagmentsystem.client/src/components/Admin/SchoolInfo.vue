@@ -28,7 +28,52 @@
             </div>
             <div v-else>
               <p>No address available.</p>
-              <v-btn class="mt-3"> Add Address </v-btn>
+              <v-btn class="mt-3" @click="dialog = true"> Add Address </v-btn>
+
+              <v-dialog v-model="dialog" max-width="600px">
+                <v-card>
+                  <v-card-title>
+                    <span class="headline">Add Address</span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-form v-model="valid">
+                      <v-text-field
+                        v-model="newAddress.city"
+                        label="City"
+                        :rules="[rules.required]"
+                        required
+                      />
+                      <v-text-field
+                        v-model="newAddress.street"
+                        label="Street"
+                        :rules="[rules.required]"
+                        required
+                      />
+                      <v-text-field
+                        v-model="newAddress.number"
+                        label="Number"
+                        :rules="[rules.required]"
+                        required
+                      />
+                      <v-text-field
+                        v-model="newAddress.zipCode"
+                        label="Zip Code"
+                        :rules="[rules.required]"
+                        required
+                      />
+                    </v-form>
+                  </v-card-text>
+                  <v-card-actions class="pa-5">
+                    <v-btn @click="dialog = false">Cancel</v-btn>
+                    <v-btn
+                      color="primary"
+                      :disabled="!valid"
+                      @click="addAddress"
+                      >Add Address</v-btn
+                    >
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
             </div>
           </v-card-text>
         </v-card>
@@ -38,16 +83,33 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { getNumberOfClass } from "@/services/classService";
-import { getAddressById, deleteAddress } from "@/services/addressService";
+import {
+  getAddressById,
+  deleteAddress,
+  createAddress,
+} from "@/services/addressService";
 import type { Address } from "@/models/Address";
+import type { AddressCreateDTO } from "@/models/AddresCreateDTO";
 
 const route = useRoute();
 const schoolId = Number(route.params.id);
 const numberOfClasses = ref<number | null>(null);
 const address = ref<Address | null>(null);
+const dialog = ref(false);
+const valid = ref(false);
+const newAddress = ref<AddressCreateDTO>({
+  city: "",
+  street: "",
+  number: "",
+  zipCode: "",
+});
+
+const rules = {
+  required: (value: any) => !!value || "Required.",
+};
 
 const handleDelete = async () => {
   await deleteAddress(schoolId);
@@ -58,10 +120,14 @@ const fetchAddress = async () => {
   address.value = await getAddressById(schoolId);
 };
 
+const addAddress = async () => {
+  await createAddress(schoolId, newAddress.value);
+  dialog.value = false;
+  await fetchAddress();
+};
+
 onMounted(async () => {
   numberOfClasses.value = await getNumberOfClass(schoolId);
   await fetchAddress();
 });
 </script>
-
-<style scoped></style>

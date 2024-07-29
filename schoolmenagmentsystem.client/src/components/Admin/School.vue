@@ -122,13 +122,11 @@ const handleInfo = (id: number) => {
 };
 
 const submitForm = async () => {
-  if (valid.value) {
-    await createSchool(newSchool.value as School);
-    newSchool.value.title = "";
-    newSchool.value.numberOfRooms = 0;
-    newSchool.value.type = SchoolType.TechnicalSchool;
-    await fetchSchools();
-  }
+  await createSchool(newSchool.value as School);
+  newSchool.value.title = "";
+  newSchool.value.numberOfRooms = 0;
+  newSchool.value.type = SchoolType.TechnicalSchool;
+  await fetchSchools();
 };
 
 onMounted(() => {
