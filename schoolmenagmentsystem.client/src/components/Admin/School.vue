@@ -67,14 +67,13 @@
 <script setup lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
 import {
-  getSchools,
-  createSchool,
-  deleteSchool,
+  getSchoolsService,
+  createSchoolService,
+  deleteSchoolService,
 } from "@/services/schoolService";
 import type { School } from "@/models/School";
 import { SchoolType } from "@/enums/SchoolType";
 import { getSchoolTypeText } from "@/enums/getSchoolTypeText";
-import { getNumberOfClass } from "@/services/classService";
 import router from "@/router";
 
 const schoolTypeOptions = ref([
@@ -108,12 +107,12 @@ const rules = {
 };
 
 const fetchSchools = async () => {
-  const response = await getSchools(searchTerm.value);
+  const response = await getSchoolsService(searchTerm.value);
   schools.value = response;
 };
 
 const handleDelete = async (id: number) => {
-  await deleteSchool(id);
+  await deleteSchoolService(id);
   await fetchSchools();
 };
 
@@ -122,7 +121,7 @@ const handleInfo = (id: number) => {
 };
 
 const submitForm = async () => {
-  await createSchool(newSchool.value as School);
+  await createSchoolService(newSchool.value as School);
   newSchool.value.title = "";
   newSchool.value.numberOfRooms = 0;
   newSchool.value.type = SchoolType.TechnicalSchool;

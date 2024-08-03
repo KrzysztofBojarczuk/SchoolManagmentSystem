@@ -4,12 +4,14 @@ import axios from "axios";
 
 const API_URL = "https://localhost:7290/api/Address";
 
-export const getAddressById = async (schoolId: number): Promise<Address> => {
+export const getAddressByIdService = async (
+  schoolId: number
+): Promise<Address> => {
   const response = await axios.get(`${API_URL}/${schoolId}`);
   return response.data;
 };
 
-export const createAddress = async (
+export const createAddressService = async (
   schoolId: number,
   address: AddressCreateDTO
 ): Promise<AddressCreateDTO> => {
@@ -17,14 +19,14 @@ export const createAddress = async (
   return response.data;
 };
 
-export const updateAddress = async (
+export const updateAddressService = async (
   schoolId: number,
-  address: Address
-): Promise<Address> => {
+  address: AddressCreateDTO
+): Promise<AddressCreateDTO> => {
   const response = await axios.put(`${API_URL}/${schoolId}`, address);
   return response.data;
 };
 
-export const deleteAddress = async (schoolId: number): Promise<void> => {
+export const deleteAddressService = async (schoolId: number): Promise<void> => {
   await axios.delete(`${API_URL}/${schoolId}`);
 };
