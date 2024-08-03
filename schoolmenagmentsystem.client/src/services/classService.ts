@@ -3,14 +3,14 @@ import type { Class } from "@/models/Class";
 
 const API_URL = "https://localhost:7290/api/Class";
 
-export const getClassesForSchoolById = async (
+export const getClassesForSchoolByIdService = async (
   schoolId: number
 ): Promise<Class[]> => {
   const response = await axios.get(`${API_URL}/school/${schoolId}`);
   return response.data;
 };
 
-export const getClassbyId = async (
+export const getClassbyIdService = async (
   schoolId: number,
   classId: number
 ): Promise<Class> => {
@@ -20,7 +20,7 @@ export const getClassbyId = async (
   return response.data;
 };
 
-export const createClass = async (
+export const createClassService = async (
   schoolId: number,
   createClass: Class
 ): Promise<Class> => {
@@ -31,7 +31,7 @@ export const createClass = async (
   return response.data;
 };
 
-export const updateClass = async (
+export const updateClassService = async (
   schoolId: number,
   classToUpdate: Class
 ): Promise<Class> => {
@@ -42,14 +42,16 @@ export const updateClass = async (
   return response.data;
 };
 
-export const deleteClass = async (
+export const deleteClassService = async (
   schoolId: number,
   classId: number
 ): Promise<void> => {
   await axios.delete(`${API_URL}/school/${schoolId}/class/${classId}`);
 };
 
-export const getNumberOfClass = async (schoolId: number): Promise<number> => {
+export const getNumberOfClassService = async (
+  schoolId: number
+): Promise<number> => {
   const response = await axios.get(
     `${API_URL}/getNumberOfSchool?schoolId=${schoolId}`
   );
