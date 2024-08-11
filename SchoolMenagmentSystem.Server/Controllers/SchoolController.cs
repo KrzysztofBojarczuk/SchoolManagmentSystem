@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SchoolManagmentSystem.Server.Enums;
 using SchoolMenagmentSystem.Server.Abstraction;
 using SchoolMenagmentSystem.Server.Dtos;
 using SchoolMenagmentSystem.Server.Models;
+using System.Diagnostics.Metrics;
 
 namespace SchoolMenagmentSystem.Server.Controllers
 {
@@ -21,9 +23,9 @@ namespace SchoolMenagmentSystem.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAlSchool(string searchTerm = null)
+        public async Task<IActionResult> GetAlSchool(string searchTerm = null, [FromQuery] List<SchoolType> enumSchool = null)
         {
-            var school = await _shoolRepository.GetAllSchoolAsync(searchTerm);
+            var school = await _shoolRepository.GetAllSchoolAsync(searchTerm, enumSchool);
 
             var schoolGet =_mapper.Map<List<SchoolGetDto>>(school);
 

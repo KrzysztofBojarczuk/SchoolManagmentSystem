@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SchoolManagmentSystem.Server.Enums;
 using SchoolMenagmentSystem.Server.Abstraction;
 using SchoolMenagmentSystem.Server.Data;
 using SchoolMenagmentSystem.Server.Models;
 using System;
+using System.Linq;
 
 namespace SchoolMenagmentSystem.Server.Repositories
 {
@@ -35,16 +37,21 @@ namespace SchoolMenagmentSystem.Server.Repositories
             return school;
         }
 
-        public async Task<List<School>> GetAllSchoolAsync(string searchTerm)
+        public async Task<List<School>> GetAllSchoolAsync(string searchTerm, List<SchoolType> enumSchool)
         {
-            var query = await _context.Schools.ToListAsync();
+            IQueryable<School> query = _context.Schools;
 
             if (!searchTerm.IsNullOrEmpty())
             {
-                query = query.Where(x => x.Title.ToLower().Contains(searchTerm.ToLower())).ToList();
+                query = query.Where(x => x.Title.ToLower().Contains(searchTerm.ToLower()));
             }
 
-            return query;
+            if (!enumSchool.IsNullOrEmpty())
+            {
+                query = query.Where(x => enumSchool.Contains(x.Type));
+            }
+
+            return query.ToList();
         }
 
         public async Task<School> GetSchoolbyIdAsync(int schoolId)
