@@ -30,6 +30,20 @@
       label="Search"
       @input="fetchSchools"
     ></v-text-field>
+    <v-btn-toggle
+      v-model="selectedValues"
+      class="mb-4"
+      @change="getTypeSchool"
+      multiple
+    >
+      <v-btn
+        v-for="option in schoolTypeOptions"
+        :key="option.value"
+        :value="option.value"
+      >
+        {{ option.text }}
+      </v-btn>
+    </v-btn-toggle>
     <v-data-table
       :headers="headers"
       :items="schools"
@@ -92,6 +106,8 @@ const headers = ref([
   { title: "Actions", value: "actions", sortable: false },
 ]);
 
+const selectedValues = ref<number[]>([]);
+
 const valid = ref(false);
 
 const newSchool = ref<Partial<School>>({
@@ -104,6 +120,10 @@ const searchTerm = ref<string>("");
 const rules = {
   required: (value: any) => !!value || "Required.",
   number: (value: any) => !isNaN(value) || "Must be a number.",
+};
+
+const getTypeSchool = () => {
+  console.log("Selected values:", selectedValues.value);
 };
 
 const fetchSchools = async () => {
